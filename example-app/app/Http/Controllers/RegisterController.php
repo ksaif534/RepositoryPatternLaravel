@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Hash;
+//Helpers
+use App\Repositories\Helpers\RegisterControllerHelpers\StoreRegistrationDataHelper;
 
 class RegisterController extends Controller
 {
@@ -13,6 +15,12 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private StoreRegistrationDataHelper $storeRegistrationDataHelper;
+
+    public function __construct(StoreRegistrationDataHelper $storeRegistrationDataHelper){
+        $this->storeRegistrationDataHelper = $storeRegistrationDataHelper;
+    }
+
     public function index()
     {
         
@@ -36,14 +44,7 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        $userName   = $request->get('name');
-        $email      = $request->get('email');
-        $password   = $request->get('password');
-        User::firstOrCreate([
-            'name'      => $userName,
-            'email'     => $email,
-            'password'  => Hash::make($password)
-        ]);
+        $this->storeRegistrationDataHelper->storeRegData($request);
         return back();
     }
 

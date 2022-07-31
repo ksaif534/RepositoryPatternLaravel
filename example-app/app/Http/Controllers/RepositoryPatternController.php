@@ -13,20 +13,25 @@ use App\Repositories\Helpers\RepositoryPatternControllerHelpers\DestroyRepositor
 
 class RepositoryPatternController extends Controller
 {
-    private GetRepositoryPatternIndexHelper $getRepositoryPatternRepo;
-    private StoreRepositoryPatternHelper $storeRepositoryPatternRepo;
-    private UpdateRepositoryPatternHelper $updateRepositoryPatternRepo;
-    private DestroyRepositoryPatternHelper $destroyRepositoryPatternRepo;
+    private GetRepositoryPatternIndexHelper $getRepositoryPatternHelper;
+    private StoreRepositoryPatternHelper $storeRepositoryPatternHelper;
+    private UpdateRepositoryPatternHelper $updateRepositoryPatternHelper;
+    private DestroyRepositoryPatternHelper $destroyRepositoryPatternHelper;
 
-    public function __construct(GetRepositoryPatternIndexHelper $getRepositoryPatternRepo, StoreRepositoryPatternHelper $storeRepositoryPatternRepo, UpdateRepositoryPatternHelper $updateRepositoryPatternRepo, DestroyRepositoryPatternHelper $destroyRepositoryPatternRepo){
-        $this->getRepositoryPatternRepo = $getRepositoryPatternRepo;
-        $this->storeRepositoryPatternRepo = $storeRepositoryPatternRepo;
-        $this->updateRepositoryPatternRepo = $updateRepositoryPatternRepo;
-        $this->destroyRepositoryPatternRepo = $destroyRepositoryPatternRepo;
+    public function __construct(
+        GetRepositoryPatternIndexHelper $getRepositoryPatternHelper, 
+        StoreRepositoryPatternHelper $storeRepositoryPatternHelper, 
+        UpdateRepositoryPatternHelper $updateRepositoryPatternHelper, 
+        DestroyRepositoryPatternHelper $destroyRepositoryPatternHelper
+        ){
+        $this->getRepositoryPatternHelper       = $getRepositoryPatternHelper;
+        $this->storeRepositoryPatternHelper     = $storeRepositoryPatternHelper;
+        $this->updateRepositoryPatternHelper    = $updateRepositoryPatternHelper;
+        $this->destroyRepositoryPatternHelper   = $destroyRepositoryPatternHelper;
     }
 
     public function index(){
-        $repoPatterns = $this->getRepositoryPatternRepo->getRepoPatterns();
+        $repoPatterns = $this->getRepositoryPatternHelper->getRepoPatterns();
         return view('repository-pattern-index',compact('repoPatterns'));
     }
 
@@ -35,7 +40,7 @@ class RepositoryPatternController extends Controller
     }
 
     public function store(Request $request){
-        $this->storeRepositoryPatternRepo->storeRepoPatterns($request);
+        $this->storeRepositoryPatternHelper->storeRepoPatterns($request);
         return back();
     }
 
@@ -55,12 +60,12 @@ class RepositoryPatternController extends Controller
             'description'           => $description,
             'repository_pattern'    => $repository_pattern
         );
-        $this->updateRepositoryPatternRepo->updateRepoPatterns($reqData);
+        $this->updateRepositoryPatternHelper->updateRepoPatterns($reqData);
         return back();
     }
 
     public function destroy(Request $request,RepositoryPattern $repository_pattern){
-        $this->destroyRepositoryPatternRepo->deleteRepoPattern($repository_pattern);
+        $this->destroyRepositoryPatternHelper->deleteRepoPattern($repository_pattern);
         return back();
     }
 }

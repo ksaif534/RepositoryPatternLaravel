@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+//Helpers
+use App\Repositories\Helpers\LoginControllerHelpers\AuthenticateLoginFormDataHelper;
 
 class LoginController extends Controller
 {
+    private AuthenticateLoginFormDataHelper $authenticateLoginFormDataHelper;
+
+    public function __construct(AuthenticateLoginFormDataHelper $authenticateLoginFormDataHelper){
+        $this->authenticateLoginFormDataHelper = $authenticateLoginFormDataHelper;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,36 +43,7 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        $login      = $request->get('login');
-        $password   = $request->get('password');
-        $query      = User::where('name',$login)
-                        ->orWhere('email',$login)
-                        ->first();
-        $col_name   = '';
-        $col_value  = '';
-        if($query){
-            if(filter_var($login, FILTER_VALIDATE_EMAIL)){
-                $col_name   = 'email';
-                $col_value  = $query->email;
-            }elseif(preg_match("/[a-zA-Z0-9]/",$login)){
-                $col_name   = 'name';
-                $col_value  = $query->name;
-            }else{
-                
-            }
-            $remember       = $request->has('remember') && $request->remember ? $request->remember : false;
-            $credentials    = [
-                $col_name   => $col_value,
-                'password'  => $password
-            ]; 
-            if (Auth::attempt($credentials,$remember)) {
-                return redirect()->route('repository-pattern.index');
-            }else{
-                return back();
-            }
-        }else{
-            return back();
-        }
+        return $this->authenticateLoginFormDataHelper($request);
     }
 
     /**
