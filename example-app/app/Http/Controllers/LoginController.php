@@ -43,7 +43,7 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->authenticateLoginFormDataHelper($request);
+        return $this->authenticateLoginFormDataHelper->authenticateLoginFormData($request);
     }
 
     /**

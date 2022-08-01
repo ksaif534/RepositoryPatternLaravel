@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Helpers\LoginControllerHelpers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Interfaces\UserRepositoryInterface;
 
 class AuthenticateLoginFormDataHelper{
