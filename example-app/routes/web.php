@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::resource('repository-pattern','App\Http\Controllers\RepositoryPatternController');
 Route::resource('register','App\Http\Controllers\RegisterController');
 Route::resource('login','App\Http\Controllers\LoginController');
